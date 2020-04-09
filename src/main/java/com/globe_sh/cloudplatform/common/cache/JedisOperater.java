@@ -1,13 +1,16 @@
 package com.globe_sh.cloudplatform.common.cache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.alibaba.fastjson.JSONObject;
 import com.globe_sh.cloudplatform.common.util.StaticVariable;
 
 import redis.clients.jedis.Jedis;
+
 
 public class JedisOperater {
 	
@@ -61,6 +64,12 @@ public class JedisOperater {
 		
 		return status;
 	}
+	public static void updateStationStatus(String sid, String stationStatus) {
+		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
+		jedis.select(StaticVariable.REDIS_TABLE_STATION_STATUS);
+		jedis.set(sid, stationStatus);
+		JedisDataSource.getInstance().closeJedisConnection(jedis);
+	}	
 	/************ Status  End*************/
 	
 	
@@ -75,6 +84,18 @@ public class JedisOperater {
 		
 		return valid;
 	}
+	public static void addStation(String sid, String jstr) {
+		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
+		jedis.select(StaticVariable.REDIS_TABLE_STATION_LIST);
+		jedis.set(sid, jstr);
+		JedisDataSource.getInstance().closeJedisConnection(jedis);
+	}
+	public static void removeStation(String sid) {
+		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
+		jedis.select(StaticVariable.REDIS_TABLE_STATION_LIST);
+		jedis.del(sid);
+		JedisDataSource.getInstance().closeJedisConnection(jedis);
+	}
 	public static String getStation(String sid) {
 		String stationJson = null;
 		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
@@ -83,13 +104,7 @@ public class JedisOperater {
 		JedisDataSource.getInstance().closeJedisConnection(jedis);
 		
 		return stationJson;
-	}
-	public static void updateStationStatus(String sid, String stationStatus) {
-		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
-		jedis.select(StaticVariable.REDIS_TABLE_STATION_STATUS);
-		jedis.set(sid, stationStatus);
-		JedisDataSource.getInstance().closeJedisConnection(jedis);
-	}
+	}	
 	/************ Station End *************/
 	
 	
@@ -104,13 +119,30 @@ public class JedisOperater {
 		JedisDataSource.getInstance().closeJedisConnection(jedis);
 		return dataDecoderList;
 	}
-	public static void addDataDecoder(String dataBlock, String decoder) {
+	public static void addDataDecoder(String dataBlock, String data, String decoder) {
 		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
 		jedis.select(StaticVariable.REDIS_TABLE_STATION_PROTOCOL);
+
+		//remove first
+		removeDataDecoder(dataBlock, data);
+		//add
 		jedis.rpush(dataBlock, decoder);
-		
 		JedisDataSource.getInstance().closeJedisConnection(jedis);
 	}
+	public static void removeDataDecoder(String dataBlock, String data) {
+		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
+		jedis.select(StaticVariable.REDIS_TABLE_STATION_PROTOCOL);
+
+		List<String> dataDecoderList = getDataDecoder(dataBlock);
+		for(String dc : dataDecoderList) {
+			JSONObject js = JSONObject.parseObject(dc);
+			if( data.equals( js.getString("data_code") ) ) {//find record
+				jedis.lrem(dataBlock, 0, dc);
+			}
+		}		
+			
+		JedisDataSource.getInstance().closeJedisConnection(jedis);
+	}	
 	public static void cleanDeviceProtocol() {
 		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
 		jedis.select(StaticVariable.REDIS_TABLE_STATION_PROTOCOL);
