@@ -13,6 +13,7 @@ public class StaticVariable {
 	public static final int REDIS_TABLE_STATION_ONLINE = 2;   		//Contain the station status，key is station code
 	public static final int REDIS_TABLE_STATION_PROTOCOL = 3; 		//Contains the data decoder, the key is the data block code
 	public static final int REDIS_TABLE_STATION_STATUS = 4; 		//Contains the station data, key is the station code
+	public static final int REDIS_TABLE_DATABLOCK_INDEX = 5; 		//Contains the datablock index and code table
 
 	public static final int REDIS_TABLE_AGENT_CLUSTER = 4;
 	//header

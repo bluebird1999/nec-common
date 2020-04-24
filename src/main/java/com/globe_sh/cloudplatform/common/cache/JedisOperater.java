@@ -106,7 +106,30 @@ public class JedisOperater {
 		return stationJson;
 	}	
 	/************ Station End *************/
-	
+
+	/************ DataBlock  Start*************/
+	public static void addDataBlock(String code, int id) {
+		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
+		jedis.select(StaticVariable.REDIS_TABLE_DATABLOCK_INDEX);
+		jedis.set(code, String.valueOf(id));
+		JedisDataSource.getInstance().closeJedisConnection(jedis);
+	}
+	public static void removeDataBlock(String code) {
+		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
+		jedis.select(StaticVariable.REDIS_TABLE_DATABLOCK_INDEX);
+		jedis.del(code);
+		JedisDataSource.getInstance().closeJedisConnection(jedis);
+	}
+	public static String getDataBlock(String code) {
+		String stationJson = null;
+		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
+		jedis.select(StaticVariable.REDIS_TABLE_DATABLOCK_INDEX);
+		stationJson = jedis.get(code);
+		JedisDataSource.getInstance().closeJedisConnection(jedis);
+		
+		return stationJson;
+	}	
+	/************ DataBlock End *************/
 	
 
 	/************ Decoder Start *************/
@@ -119,7 +142,7 @@ public class JedisOperater {
 		JedisDataSource.getInstance().closeJedisConnection(jedis);
 		return dataDecoderList;
 	}
-	public static void addDataDecoder(String dataBlock, String data, String decoder) {
+	public static void addDataDecoder(String dataBlock, int data, String decoder) {
 		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
 		jedis.select(StaticVariable.REDIS_TABLE_STATION_PROTOCOL);
 
@@ -129,18 +152,17 @@ public class JedisOperater {
 		jedis.rpush(dataBlock, decoder);
 		JedisDataSource.getInstance().closeJedisConnection(jedis);
 	}
-	public static void removeDataDecoder(String dataBlock, String data) {
+	public static void removeDataDecoder(String dataBlock, int id) {
 		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
 		jedis.select(StaticVariable.REDIS_TABLE_STATION_PROTOCOL);
 
 		List<String> dataDecoderList = getDataDecoder(dataBlock);
 		for(String dc : dataDecoderList) {
 			JSONObject js = JSONObject.parseObject(dc);
-			if( data.equals( js.getString("data_code") ) ) {//find record
+			if( id == js.getIntValue("id") ) {//find record
 				jedis.lrem(dataBlock, 0, dc);
 			}
 		}		
-			
 		JedisDataSource.getInstance().closeJedisConnection(jedis);
 	}	
 	public static void cleanDeviceProtocol() {
@@ -151,7 +173,6 @@ public class JedisOperater {
 		JedisDataSource.getInstance().closeJedisConnection(jedis);
 	}
 	/************ Decoder End *************/
-	
 	
 	public static String getNodeInfo(String node) {
 		String nodeJson = null;
