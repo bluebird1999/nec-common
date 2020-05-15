@@ -106,30 +106,6 @@ public class JedisOperater {
 		return stationJson;
 	}	
 	/************ Station End *************/
-
-	/************ DataBlock  Start*************/
-	public static void addDataBlock(String code, int id) {
-		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
-		jedis.select(StaticVariable.REDIS_TABLE_DATABLOCK_INDEX);
-		jedis.set(code, String.valueOf(id));
-		JedisDataSource.getInstance().closeJedisConnection(jedis);
-	}
-	public static void removeDataBlock(String code) {
-		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
-		jedis.select(StaticVariable.REDIS_TABLE_DATABLOCK_INDEX);
-		jedis.del(code);
-		JedisDataSource.getInstance().closeJedisConnection(jedis);
-	}
-	public static String getDataBlock(String code) {
-		String stationJson = null;
-		Jedis jedis = JedisDataSource.getInstance().getJedisConnection();
-		jedis.select(StaticVariable.REDIS_TABLE_DATABLOCK_INDEX);
-		stationJson = jedis.get(code);
-		JedisDataSource.getInstance().closeJedisConnection(jedis);
-		
-		return stationJson;
-	}	
-	/************ DataBlock End *************/
 	
 
 	/************ Decoder Start *************/

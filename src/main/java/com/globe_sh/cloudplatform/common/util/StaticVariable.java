@@ -17,23 +17,22 @@ public class StaticVariable {
 
 	public static final int REDIS_TABLE_AGENT_CLUSTER = 4;
 	//header
-	public static final int PROTOCOL_CONTROL_LENGTH = 25;
+	public static final int PROTOCOL_CONTROL_LENGTH = 21;
 	public static final int PROTOCOL_CONTROL_STATION_START = 6;
-	public static final int PROTOCOL_CONTROL_STATION_LENGTH = 8;	
-	public static final int PROTOCOL_CONTROL_DATALENGTH_START = 22;
-	public static final int PROTOCOL_CONTROL_DATATIME_START = 14;
+	public static final int PROTOCOL_CONTROL_DATATIME_START = 10;
 	public static final int PROTOCOL_CONTROL_DATATIME_LENGTH = 8;
+	public static final int PROTOCOL_CONTROL_DATALENGTH_START = 18;
+	
 	//01 login
-	public static final int PROTOCOL_CONTROL_LOGINSEQ_START = 24;
-	public static final int PROTOCOL_CONTROL_NUMBER_START = 26;
+	public static final int PROTOCOL_CONTROL_LOGINSEQ_START = 20;
+	public static final int PROTOCOL_CONTROL_NUMBER_START = 22;
 	//02 data
+	public static final int PROTOCOL_CONTROL_LINE_START = 20;
 	public static final int PROTOCOL_CONTROL_DEVICE_START = 24;
-	public static final int PROTOCOL_CONTROL_DEVICE_LENGTH = 8;
-	public static final int PROTOCOL_CONTROL_DB_START = 34;
-	public static final int PROTOCOL_CONTROL_DB_LENGTH = 8;	
-	public static final int PROTOCOL_CONTROL_SAMPLETIME_START = 42;	
-	public static final int PROTOCOL_CONTROL_REALDATALENGTH_START = 50;
-	public static final int PROTOCOL_CONTROL_DATA_START = 52;
+	public static final int PROTOCOL_CONTROL_DB_START = 30;
+	public static final int PROTOCOL_CONTROL_SAMPLETIME_START = 34;	
+	public static final int PROTOCOL_CONTROL_REALDATALENGTH_START = 42;
+	public static final int PROTOCOL_CONTROL_DATA_START = 44;
 	
 	public static final byte PROTOCOL_LOGIN = 0x01;
 	public static final byte PROTOCOL_LOGOUT = 0x04;

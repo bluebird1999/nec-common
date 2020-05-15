@@ -16,7 +16,7 @@ public class StaticMethod {
 	public static final byte PACK_DATA_INSIDE = 0x25;
 	public static final byte PACK_DATA_OUTSIDE = 0x24;
 	public static final int PACK_CONNECT_ID_LENGTH = 60;
-	public static final int PACK_PACKAGE_CONTROL_LENGTH = 25;
+	public static final int PACK_PACKAGE_CONTROL_LENGTH = 21;
 	
 	public static boolean isNull(String s) {
 		if(s == null || "".equals(s))
@@ -346,4 +346,11 @@ public class StaticMethod {
           bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
         return Float.intBitsToFloat(intBits);  
     }    	
+    public static final byte[] intToByteArray(int value) {
+        return new byte[] {
+                (byte)(value >>> 24),
+                (byte)(value >>> 16),
+                (byte)(value >>> 8),
+                (byte)value};
+    }    
 }
