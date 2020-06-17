@@ -339,13 +339,25 @@ public class StaticMethod {
     public static byte[] floatToByteArray(float value) {
         int intBits =  Float.floatToIntBits(value);
         return new byte[] {
-          (byte) (intBits >> 24), (byte) (intBits >> 16), (byte) (intBits >> 8), (byte) (intBits) };
+          (byte) (intBits >> 0), (byte) (intBits >> 8), (byte) (intBits >> 16), (byte) (intBits >> 24) };
     }   
+    public static byte[] floatToByteArrayLowEnd(float value) {
+        int intBits =  Float.floatToIntBits(value);
+        return new byte[] {
+          (byte) (intBits >> 24), (byte) (intBits >> 16), (byte) (intBits >> 8), (byte) (intBits) };
+    }    
     public static float byteArrayToFloat(byte[] bytes) {
+        int intBits = 
+          bytes[3] << 24 | (bytes[2] & 0xFF) << 16 | (bytes[1] & 0xFF) << 8 | (bytes[0] & 0xFF);
+        return Float.intBitsToFloat(intBits);  
+    }    	
+    public static float byteArrayToFloatLowEnd(byte[] bytes) {
         int intBits = 
           bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
         return Float.intBitsToFloat(intBits);  
-    }    	
+    }     
+    
+    
     public static final byte[] intToByteArray(int value) {
         return new byte[] {
                 (byte)(value >>> 24),
