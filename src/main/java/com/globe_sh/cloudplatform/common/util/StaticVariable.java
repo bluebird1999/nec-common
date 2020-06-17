@@ -82,6 +82,8 @@ public class StaticVariable {
 	public static final String PARAMETER_TYPE_BIT4 = "bit4";
 	public static final String PARAMETER_TYPE_CAN = "can";
 	public static final String PARAMETER_TYPE_REAL = "real";
+	public static final String PARAMETER_TYPE_INT = "int";
+	public static final String PARAMETER_TYPE_DINT = "dint";
 	
 	public static final String VEHICLE_HBASE_LABEL_TABLE = "TableName";
 	public static final String VEHICLE_HBASE_LABEL_ROWKEY = "RowKey";

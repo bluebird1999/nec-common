@@ -40,6 +40,16 @@ public class ByteArrayUtil {
         return (short) (0xff00 & arr[index] << 8 | (0xff & arr[index + 1]));  
     }  
     
+    // 从byte数组的index处的连续两个字节获得一个word  低字节在前
+    public static int getWord(byte[] arr, int index) {  
+        return Short.toUnsignedInt( getShort(arr,index));  
+    }  
+
+    // 从byte数组的index处的连续两个字节获得一个word  低字节在后
+    public static int getWordLowEnd(byte[] arr, int index) {  
+    	return Short.toUnsignedInt( getShortLowEnd(arr,index));   
+    } 
+    
     // int转换为byte[4]数组  
     public static byte[] getByteArray(int i) {  
         byte[] b = new byte[4];  
@@ -58,6 +68,16 @@ public class ByteArrayUtil {
         b[3] = (byte)  (i & 0x000000ff);  
         return b;  
     }  
+    
+    // 从byte数组的index处的连续4个字节获得一个dword 
+    public static long getDWord(byte[] arr, int index) {  
+        return  Integer.toUnsignedLong( getInt(arr,index) );  
+    }  
+    
+    // 从byte数组的index处的连续4个字节获得一个dword 
+    public static long getDWordLowEnd(byte[] arr, int index) {  
+    	return  Integer.toUnsignedLong( getIntLowEnd(arr,index) );  
+    } 
     
     // 从byte数组的index处的连续4个字节获得一个int  
     public static int getInt(byte[] arr, int index) {  
